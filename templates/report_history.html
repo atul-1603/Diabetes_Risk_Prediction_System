@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Diabetes Reports History</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reportHistory.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>DiabCheck</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a  href="{{ url_for('dashboard') }}">Home</a></li>
+                    <li><a  href="{{ url_for('dashboard') }}#about">About</a></li>
+                    <li><a href="{{ url_for('dashboard') }}#assessment">Assessment</a></li>
+                    <li><a href="/history">History</a></li>
+                    <li><a href="{{ url_for('dashboard') }}#tips">Health Tips</a></li>
+                </ul>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="hamburger" id="hamburger">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="assessment-section">
+            <div class="container">
+                <h2>Your Diabetes Reports</h2>
+                <p class="section-subtitle">View and manage all your previous risk assessments</p>
+                
+                <div class="reports-container" id="reportsContainer">
+                    {% if reports %}
+                        {% for report in reports %}
+                        <div class="report-card">
+                            <div class="report-header">
+                                <h3>Report {{ loop.index }}</h3>
+                                <span class="report-risk risk-{{ report.risk_level|lower }}">{{ report.risk_level }} Risk</span>
+                            </div>
+                            <div class="report-date">{{ report.date|datetimeformat }}</div>
+                            <div class="report-percentage">{{ report.risk_percentage|round(1) }}% risk</div>
+                            <div class="report-actions">
+                                <a href="/report/{{ report.filename }}" class="secondary-button">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                                <a href="/report/{{ report.filename }}?download=true" class="secondary-button">
+                                    <i class="fas fa-download"></i> Download
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-folder-open" style="font-size: 3rem; margin-bottom: 20px;"></i>
+                            <h3>No reports yet</h3>
+                            <p>Complete a diabetes risk assessment to generate your first report</p>
+                            <a href="/#assessment" class="submit-button" style="margin-top: 20px; display: inline-block;">
+                                Take Assessment
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <!-- Your existing footer -->
+    </footer>
+</body>
+</html>

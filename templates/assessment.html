@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Risk Prediction Results</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@0.1.3/dist/chartjs-chart-matrix.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/assessment.css') }}">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>DiabCheck</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a  href="{{ url_for('dashboard') }}">Home</a></li>
+                    <li><a  href="{{ url_for('dashboard') }}#about">About</a></li>
+                    <li><a href="{{ url_for('dashboard') }}#assessment">Assessment</a></li>
+                    <li><a href="/history">History</a></li>
+                    <li><a href="{{ url_for('dashboard') }}#tips">Health Tips</a></li>
+                </ul>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="hamburger" id="hamburger">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Assessment Form Section -->
+        <section class="assessment-section" id="assessment">
+            <div class="container">
+                <h2>Diabetes Risk Assessment</h2>
+                <p class="section-subtitle">Please provide the following information to assess your diabetes risk</p>
+
+                <form id="diabetesForm" class="assessment-form">
+                    <div class="form-group">
+                        <label for="pregnancies">Number of Pregnancies</label>
+                        <input type="number" id="pregnancies" name="pregnancies" min="0" max="20" required>
+                        <span class="input-hint">For females only (enter 0 if not applicable)</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" name="age" min="1" max="120" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <div class="radio-group">
+                            <label class="radio-container">
+                                <input type="radio" name="gender" value="male" checked>
+                                <span class="radio-checkmark"></span>
+                                Male
+                            </label>
+                            <label class="radio-container">
+                                <input type="radio" name="gender" value="female">
+                                <span class="radio-checkmark"></span>
+                                Female
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="glucose">Glucose Level (mg/dL)</label>
+                        <input type="number" id="glucose" name="glucose" min="0" max="500" required>
+                        <span class="input-hint">Normal range: 70-99 mg/dL (fasting)</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bloodPressure">Blood Pressure (mmHg)</label>
+                        <input type="number" id="bloodPressure" name="bloodPressure" min="0" max="200" required>
+                        <span class="input-hint">Normal range: below 120/80 mmHg</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bmi">Body Mass Index (BMI)</label>
+                        <input type="number" id="bmi" name="bmi" min="10" max="60" step="0.1" required>
+                        <span class="input-hint">Normal range: 18.5-24.9</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="insulin">Insulin Level (μU/mL) </label>
+                        <input type="number" id="insulin" name="insulin" min="0" max="200">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="skinThickness">Skin Thickness (mm) </label>
+                        <input type="number" id="skinThickness" name="skinThickness" min="0" max="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pedigree">Diabetes Pedigree Function </label>
+                        <input type="number" id="pedigree" name="pedigree" min="0" max="2" step="0.01">
+                        <span class="input-hint">Measure of genetic influence</span>
+                    </div>
+
+                    <button type="submit" class="submit-button">Calculate Risk</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Results Section (initially hidden) -->
+        <section class="results-section" id="results" style="display: none;">
+            <div class="container">
+                <h2>Your Diabetes Risk Assessment</h2>
+
+                <div class="results-container">
+                    <div class="risk-meter">
+                        <div class="gauge-container">
+                            <canvas id="riskGauge"></canvas>
+                            <div class="gauge-center">
+                                <span id="riskPercentage">0%</span>
+                            </div>
+                        </div>
+                        <div class="risk-category" id="riskCategory">
+                            <span class="risk-label">Low Risk</span>
+                        </div>
+                    </div>
+
+                    <div class="risk-message">
+                        <h3 id="riskMessage">You are at Low Risk of diabetes</h3>
+                        <p id="riskRecommendation">Maintain your healthy lifestyle!</p>
+
+                        <div class="risk-details">
+                            <h4>Key Factors:</h4>
+                            <ul id="riskFactors">
+                                <li><i class="fas fa-check-circle"></i> Healthy glucose levels</li>
+                                <li><i class="fas fa-check-circle"></i> Normal BMI range</li>
+                                <li><i class="fas fa-check-circle"></i> Optimal blood pressure</li>
+                            </ul>
+                        </div>
+
+                        <button class="secondary-button" id="downloadReport">
+                            <i class="fas fa-download"></i> Download Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Model Information Section -->
+        <section class="model-section" id="model">
+            <div class="container">
+                <h2>About Our Prediction Model</h2>
+                <p class="section-subtitle">Transparent insights into our machine learning approach</p>
+
+                <div class="model-container">
+                    <h3>Dataset Used for Training</h3>
+                    <p>Our model was trained on the PIMA Indians Diabetes Dataset, which contains health metrics from
+                        768 patients with 8 clinical features.</p>
+
+                    <div class="dataset-preview">
+                        <table class="dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>Pregnancies</th>
+                                    <th>Glucose</th>
+                                    <th>BloodPressure</th>
+                                    <th>SkinThickness</th>
+                                    <th>Insulin</th>
+                                    <th>BMI</th>
+                                    <th>Pedigree</th>
+                                    <th>Age</th>
+                                    <th>Outcome</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>6</td>
+                                    <td>148</td>
+                                    <td>72</td>
+                                    <td>35</td>
+                                    <td>0</td>
+                                    <td>33.6</td>
+                                    <td>0.627</td>
+                                    <td>50</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>85</td>
+                                    <td>66</td>
+                                    <td>29</td>
+                                    <td>0</td>
+                                    <td>26.6</td>
+                                    <td>0.351</td>
+                                    <td>31</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>8</td>
+                                    <td>183</td>
+                                    <td>64</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>23.3</td>
+                                    <td>0.672</td>
+                                    <td>32</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>89</td>
+                                    <td>66</td>
+                                    <td>23</td>
+                                    <td>94</td>
+                                    <td>28.1</td>
+                                    <td>0.167</td>
+                                    <td>21</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>0</td>
+                                    <td>137</td>
+                                    <td>40</td>
+                                    <td>35</td>
+                                    <td>168</td>
+                                    <td>43.1</td>
+                                    <td>2.288</td>
+                                    <td>33</td>
+                                    <td>1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="model-grid">
+                        <div class="model-card">
+                            <h3><i class="fas fa-project-diagram"></i> Model Architecture</h3>
+                            <p>We use a Random Forest Classifier with 100 decision trees, achieving 78% accuracy on our
+                                test dataset.</p>
+                            <div class="chart-container">
+                                <canvas id="modelArchitectureChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="model-card">
+                            <h3><i class="fas fa-chart-line"></i> ROC Curve</h3>
+                            <p>The Receiver Operating Characteristic curve shows our model's performance across
+                                different thresholds.</p>
+                            <div class="chart-container">
+                                <canvas id="rocCurveChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- <div class="model-card">
+                            <h3><i class="fas fa-th"></i> Confusion Matrix</h3>
+                            <p>Our model's performance in classifying positive and negative diabetes cases.</p>
+                            <div class="chart-container">
+                                <canvas id="confusionMatrixChart"></canvas>
+                            </div>
+                        </div> -->
+
+                        <div class="model-card">
+                            <h3><i class="fas fa-chart-bar"></i> Feature Distribution</h3>
+                            <p>Distribution of key features in our dataset showing relationships with diabetes outcomes.
+                            </p>
+                            <div class="chart-container">
+                                <canvas id="featureImportanceChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- <div class="model-card">
+                            <h3><i class="fas fa-project-diagram"></i> Model Architecture</h3>
+                            <p>Visualization of our Random Forest classifier's structure.</p>
+                            <div class="chart-container">
+                                <canvas id=""></canvas>
+                            </div>
+                        </div> -->
+
+                        <div class="model-card">
+                            <h3><i class="fas fa-chart-area"></i> Precision-Recall Curve</h3>
+                            <p>Trade-off between precision and recall for different thresholds.</p>
+                            <div class="chart-container">
+                                <canvas id="prCurveChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <i class="fas fa-heartbeat"></i>
+                        <span>DiabetesRisk</span>
+                    </div>
+                    <p>Empowering individuals with health awareness tools.</p>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="{{ url_for('dashboard') }}"Home</a></li>
+                        <li><a href="{{ url_for('dashboard') }}#about">About</a></li>
+                        <li><a href="{{ url_for('dashboard') }}#assessment">Assessment</a></li>
+                        <li><a href="{{ url_for('dashboard') }}#tips">Health Tips</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-disclaimer">
+                    <h4>Disclaimer</h4>
+                    <p>This tool is for educational purposes only and not a substitute for professional medical advice,
+                        diagnosis, or treatment.</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Diabetes Risk Prediction System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+        <script src="{{ url_for('static', filename='js/assessment.js') }}"></script>
+</body>
+
+</html>

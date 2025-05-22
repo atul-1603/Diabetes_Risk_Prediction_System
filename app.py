@@ -1,13 +1,21 @@
-from flask import Flask, send_from_directory, request, jsonify
+from flask import Flask, send_from_directory, request, jsonify, render_template
 import pickle
 import numpy as np
 import pandas as pd
+import os
+from datetime import datetime
+import json
+from reportlab.pdfgen import canvas
 
-app = Flask(__name__, static_folder='.')
+app = Flask(__name__, static_folder='static')
+app.config['UPLOAD_FOLDER'] = 'user_reports'
 
-# Load the pipeline with verification
+# Create reports directory if it doesn't exist
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+# Load the pipeline with verification (keep your existing code)
 try:
-    with open('diabetes_pipeline.pkl', 'rb') as f:
+    with open('./models/diabetes_pipeline.pkl', 'rb') as f:
         pipeline = pickle.load(f)
         print(f"Pipeline loaded successfully. Steps: {pipeline.named_steps.keys()}")
         if not hasattr(pipeline, 'predict'):
@@ -30,12 +38,60 @@ def prepare_features(user_data):
     })
 
 @app.route('/')
-def serve_index():
-    return send_from_directory('.', 'dashboard.html')
+def dashboard():
+    return render_template('assessment.html')
 
-@app.route('/<path:filename>')
-def serve_static(filename):
-    return send_from_directory('.', filename)
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/assessment')
+def assessment():
+    return render_template('assessment.html')
+
+@app.template_filter('datetimeformat')
+def datetimeformat(value, format='%Y-%m-%d %H:%M'):
+    return value.strftime(format)
+
+@app.route('/history')
+def history():
+    try:
+        # Get all report files
+        reports = []
+        for filename in os.listdir(app.config['UPLOAD_FOLDER']):
+            if filename.endswith('.json'):
+                with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'r') as f:
+                    report_data = json.load(f)
+                    date_str = report_data.get('timestamp')
+                    date_obj = datetime.fromisoformat(date_str) if date_str else None
+                    reports.append({
+                        'filename': filename,
+                        'date': date_obj,  # Now a datetime object
+                        'risk_level': report_data.get('risk_level'),
+                        'risk_percentage': report_data.get('risk_percentage')
+                    })
+        # Sort by date (newest first)
+        reports.sort(key=lambda x: x['date'], reverse=True)
+        return render_template('report_history.html', reports=reports)
+    except Exception as e:
+        return str(e), 500
+
+@app.route('/report/<filename>')
+def serve_report(filename):
+    # Security check
+    if '..' in filename or filename.startswith('/'):
+        return "Invalid filename", 400
+
+    # If user requests download or view, return the corresponding PDF
+    if filename.endswith('.json'):
+        pdf_file = filename.replace('.json', '.pdf')
+        pdf_path = os.path.join(app.config['UPLOAD_FOLDER'], pdf_file)
+        if not os.path.exists(pdf_path):
+            return "PDF report not found", 404
+        as_attachment = request.args.get('download') == 'true'
+        return send_from_directory(app.config['UPLOAD_FOLDER'], pdf_file, as_attachment=as_attachment)
+
+    return "Invalid report format", 400
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -55,35 +111,95 @@ def predict():
         features = prepare_features(data)
         print("Prepared features:", features.to_dict(orient='records')[0])  # Debug
         
-        # Debug pipeline steps
-        if hasattr(pipeline, 'named_steps'):
-            print("Pipeline steps:", pipeline.named_steps.keys())
-            
-            # Check preprocessor output
-            if 'preprocessor' in pipeline.named_steps:
-                try:
-                    transformed = pipeline.named_steps['preprocessor'].transform(features)
-                    print("Transformed features:", transformed)
-                except Exception as e:
-                    print("Preprocessor error:", str(e))
-        
         # Make prediction
         prediction = pipeline.predict(features)[0]
         proba = pipeline.predict_proba(features)[0][1]
-        print("Raw prediction:", prediction, "Probability:", proba)  # Debug
         
-        return jsonify({
+        # Generate report data
+        report_data = {
+            'timestamp': datetime.now().isoformat(),
+            'user_input': data,
             'prediction': int(prediction),
-            'risk_percentage': proba * 100,  # Don't round here
+            'risk_percentage': float(proba * 100),
             'risk_level': 'Low' if proba < 0.3 else 'Moderate' if proba < 0.7 else 'High',
-            'proba_raw': float(proba)  # For debugging
-        })
+            'personalized_suggestions': generate_suggestions(data)
+        }
+        
+        # Save report
+        filename = f"report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'w') as f:
+            json.dump(report_data, f)
+
+        save_pdf_report(report_data, filename)
+        
+        return jsonify(report_data)
         
     except Exception as e:
         print(f"Prediction error: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+def generate_suggestions(user_data):
+    """Generate personalized health suggestions based on user input"""
+    suggestions = []
+    
+    # Glucose suggestions
+    glucose = float(user_data.get('glucose', 0))
+    if glucose > 126:
+        suggestions.append("Your glucose levels are elevated. Consider reducing sugar intake and increasing physical activity.")
+    elif glucose < 70:
+        suggestions.append("Your glucose levels are lower than normal. Ensure regular meals and monitor for hypoglycemia symptoms.")
+    else:
+        suggestions.append("Your glucose levels are within normal range. Maintain your healthy habits.")
+    
+    # BMI suggestions
+    bmi = float(user_data.get('bmi', 0))
+    if bmi > 25:
+        suggestions.append(f"Your BMI of {bmi:.1f} indicates overweight. Consider a balanced diet and regular exercise.")
+    elif bmi < 18.5:
+        suggestions.append(f"Your BMI of {bmi:.1f} indicates underweight. Ensure adequate nutrition.")
+    else:
+        suggestions.append(f"Your BMI of {bmi:.1f} is within healthy range. Keep up the good work!")
+    
+    # Blood pressure suggestions
+    bp = float(user_data.get('bloodPressure', 0))
+    if bp > 130:
+        suggestions.append("Your blood pressure is elevated. Reduce sodium intake and exercise regularly.")
+    else:
+        suggestions.append("Your blood pressure is within normal range. Continue healthy lifestyle choices.")
+    
+    # Age factor
+    age = float(user_data.get('age', 0))
+    if age > 45:
+        suggestions.append(f"At {int(age)} years, regular health checkups are recommended for diabetes screening.")
+    
+    # Pregnancy suggestions for females
+    if user_data.get('gender') == 'female' and float(user_data.get('pregnancies', 0)) > 0:
+        suggestions.append(f"With {user_data['pregnancies']} pregnancies, monitor for gestational diabetes risk in future pregnancies.")
+    
+    return suggestions
+
+def save_pdf_report(data, filename):
+    pdf_path = os.path.join(app.config['UPLOAD_FOLDER'], filename.replace('.json', '.pdf'))
+    c = canvas.Canvas(pdf_path)
+    c.setFont("Helvetica", 12)
+    y = 800
+    c.drawString(50, y, "Diabetes Risk Assessment Report")
+    y -= 30
+    for key, value in data.items():
+        if isinstance(value, dict):
+            for sub_key, sub_value in value.items():
+                c.drawString(50, y, f"{sub_key}: {sub_value}")
+                y -= 20
+        elif isinstance(value, list):
+            c.drawString(50, y, f"{key}:")
+            y -= 20
+            for item in value:
+                c.drawString(70, y, f"- {item}")
+                y -= 20
+        else:
+            c.drawString(50, y, f"{key}: {value}")
+            y -= 20
+    c.save()
+
 if __name__ == '__main__':
     app.run(debug=True)
-
-    

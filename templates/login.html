@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Risk Predictor - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Welcome to the Diabetes Risk Predictor</h1>
+            <p>Login to check your health insights</p>
+        </div>
+
+        <div class="login-options">
+            <button class="oauth-btn google-btn pulse">
+                <i class="fab fa-google"></i> Continue with Google
+            </button>
+
+            <!-- <button class="oauth-btn facebook-btn pulse">
+                <i class="fab fa-facebook-f"></i> Continue with Facebook
+            </button>
+
+            <button class="oauth-btn twitter-btn pulse">
+                <i class="fab fa-twitter"></i> Continue with Twitter
+            </button> -->
+
+            <button class="oauth-btn github-btn pulse">
+                <i class="fab fa-github"></i> Continue with GitHub
+            </button>
+
+            <div class="divider">or</div>
+
+            <div class="phone-login">
+                <div class="input-group">
+                    <input type="tel" id="phone" placeholder=" " pattern="[0-9]{10}">
+                    <label for="phone">Phone Number</label>
+                </div>
+
+                <button class="send-otp-btn glow-on-focus" id="sendOtpBtn">
+                    Send OTP
+                </button>
+
+                <div class="otp-container" id="otpContainer">
+                    <p style="text-align: center; margin-bottom: 15px; color: #555;">
+                        Enter the 6-digit OTP sent to your phone
+                    </p>
+
+                    <div class="otp-inputs">
+                        <input type="text" maxlength="1" class="otp-digit">
+                        <input type="text" maxlength="1" class="otp-digit">
+                        <input type="text" maxlength="1" class="otp-digit">
+                        <input type="text" maxlength="1" class="otp-digit">
+                        <input type="text" maxlength="1" class="otp-digit">
+                        <input type="text" maxlength="1" class="otp-digit">
+                    </div>
+
+                    <button class="verify-otp-btn glow-on-focus" id="verifyOtpBtn">
+                        Verify OTP
+                    </button>
+
+                    <div class="resend-otp">
+                        Didn't receive code? <a href="#" id="resendOtp">Resend</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+        <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>

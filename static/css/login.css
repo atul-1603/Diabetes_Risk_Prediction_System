@@ -1,0 +1,374 @@
+:root {
+    --primary: #1a73e8;
+    --secondary: #34a853;
+    --facebook: #1877f2;
+    --twitter: #1da1f2;
+    --light-blue: #e8f0fe;
+    --white: #ffffff;
+    --light-gray: #f5f5f5;
+    --dark-gray: #333333;
+    --error: #d32f2f;
+    --success: #388e3c;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--light-blue);
+    background-image: url('https://images.pexels.com/photos/6942015/pexels-photo-6942015.jpeg?auto=compress&cs=tinysrgb&w=600');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.login-container {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+    animation: slideUp 0.8s ease;
+    backdrop-filter: blur(5px);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-header h1 {
+    color: var(--primary);
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.login-header p {
+    color: var(--dark-gray);
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.login-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.oauth-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    font-size: 15px;
+}
+
+.oauth-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.oauth-btn i {
+    margin-right: 12px;
+    font-size: 18px;
+}
+
+.google-btn {
+    background-color: var(--white);
+    color: var(--dark-gray);
+    border-color: #ddd;
+}
+
+.google-btn:hover {
+    background-color: #f8f8f8;
+}
+
+.github-btn {
+    background-color: #24292e;
+    color: var(--white);
+}
+
+.github-btn:hover {
+    background-color: #1b1f23;
+}
+
+.facebook-btn {
+    background-color: var(--facebook);
+    color: var(--white);
+}
+
+.facebook-btn:hover {
+    background-color: #166fe5;
+}
+
+.twitter-btn {
+    background-color: var(--twitter);
+    color: var(--white);
+}
+
+.twitter-btn:hover {
+    background-color: #1a91da;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 25px 0;
+    color: #777;
+    font-size: 14px;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+}
+
+.divider::before {
+    margin-right: 15px;
+}
+
+.divider::after {
+    margin-left: 15px;
+}
+
+.phone-login {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-group {
+    position: relative;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background-color: var(--light-gray);
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
+}
+
+.input-group label {
+    position: absolute;
+    left: 15px;
+    top: 14px;
+    color: #777;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    background-color: var(--light-gray);
+    padding: 0 5px;
+}
+
+.input-group input:focus+label,
+.input-group input:not(:placeholder-shown)+label {
+    top: -10px;
+    font-size: 12px;
+    color: var(--primary);
+}
+
+.send-otp-btn,
+.verify-otp-btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 15px;
+}
+
+.send-otp-btn:hover,
+.verify-otp-btn:hover {
+    background-color: #0d5bcf;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(13, 91, 207, 0.3);
+}
+
+.send-otp-btn:disabled,
+.verify-otp-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.otp-container {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.otp-inputs {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.otp-inputs input {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
+}
+
+.otp-inputs input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
+}
+
+.resend-otp {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #777;
+}
+
+.resend-otp a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.resend-otp a:hover {
+    text-decoration: underline;
+}
+
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateX(150%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+.toast.error {
+    background-color: var(--error);
+}
+
+.toast.success {
+    background-color: var(--success);
+}
+
+.toast i {
+    font-size: 20px;
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        padding: 30px 20px;
+    }
+
+    .login-header h1 {
+        font-size: 24px;
+    }
+
+    .login-header p {
+        font-size: 14px;
+    }
+
+    .oauth-btn,
+    .send-otp-btn,
+    .verify-otp-btn {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .otp-inputs input {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+}
+
+/* Pulse animation for buttons */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulse:hover {
+    animation: pulse 1.5s infinite;
+}
+
+/* Glow effect for focus */
+.glow-on-focus:focus {
+    box-shadow: 0 0 10px rgba(52, 168, 83, 0.5);
+}
