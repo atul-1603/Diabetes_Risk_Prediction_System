@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Risk Prediction System</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>DiabCheck</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <!-- <li><a href="#assessment">Assessment</a></li> -->
+                    <li><a href="#tips">Health Tips</a></li>
+                    <li><a href="#technology">Technology</a></li>
+                    <li><a href="login.html" class="login-btn">Login</a></li>
+                </ul>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="hamburger" id="hamburger">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Home Section -->
+        <section class="hero" id="home">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Diabetes Risk Prediction System</h1>
+                    <p class="tagline">Check your diabetes risk in under a minute</p>
+                    <a href="login.html" class="cta-button" id="startAssessment">Start Assessment</a>
+                </div>
+                <div class="hero-image">
+                    <img src="image-removebg-preview.png" alt="Health check illustration" height="350px" width="350px">
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about-section" id="about">
+            <div class="container">
+                <h2>About Diabetes</h2>
+                
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3>What is Diabetes?</h3>
+                        <p>Diabetes is a chronic health condition that affects how your body turns food into energy. With diabetes, your body either doesn't make enough insulin or can't use the insulin it makes as well as it should.</p>
+                        
+                        <h3>Why Early Prediction Matters</h3>
+                        <p>Early detection of diabetes risk allows for lifestyle interventions that can prevent or delay the onset of type 2 diabetes. Identifying risk factors helps individuals take proactive steps toward better health.</p>
+                    </div>
+                    
+                    <div class="about-stats">
+                        <div class="stat-card">
+                            <h4>463 Million</h4>
+                            <p>Adults living with diabetes worldwide (2019)</p>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <h4>1 in 2</h4>
+                            <p>Adults with diabetes remain undiagnosed</p>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <h4>80%</h4>
+                            <p>Type 2 diabetes cases are preventable</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Section -->
+        <section class="technology-section" id="technology">
+            <div class="container">
+                <h2>Our Technology</h2>
+                <p class="section-subtitle">Advanced machine learning for accurate diabetes risk prediction</p>
+                
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <div class="tech-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>Random Forest Classifier</h3>
+                        <p>Our model uses an ensemble learning method with 78% accuracy, combining multiple decision trees for robust predictions.</p>
+                        <div class="accuracy-meter">
+                            <div class="accuracy-bar" style="width: 78%;"></div>
+                            <span>78% Accuracy</span>
+                        </div>
+                    </div>
+                    
+                    <div class="tech-card">
+                        <div class="tech-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h3>Key Predictive Factors</h3>
+                        <div class="factors-chart">
+                            <canvas id="factorsChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="tech-card">
+                        <div class="tech-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h3>Technology Stack</h3>
+                        <div class="tech-stack">
+                            <div class="stack-item">
+                                <i class="fab fa-python"></i>
+                                <span>Python</span>
+                            </div>
+                            <div class="stack-item">
+                                <i class="fas fa-leaf"></i>
+                                <span>Scikit-learn</span>
+                            </div>
+                            <div class="stack-item">
+                                <i class="fab fa-js"></i>
+                                <span>JavaScript</span>
+                            </div>
+                            <div class="stack-item">
+                                <i class="fab fa-html5"></i>
+                                <span>HTML5</span>
+                            </div>
+                            <div class="stack-item">
+                                <i class="fab fa-css3-alt"></i>
+                                <span>CSS3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Health Tips Section -->
+        <section class="health-tips" id="tips">
+            <div class="container">
+                <h2>Preventive Health Tips</h2>
+                <p class="section-subtitle">Simple lifestyle changes can significantly reduce your diabetes risk</p>
+                
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3>Healthy Eating</h3>
+                        <p>Focus on whole grains, fruits, vegetables, lean proteins, and healthy fats. Limit processed foods and sugary drinks.</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <h3>Regular Exercise</h3>
+                        <p>Aim for at least 150 minutes of moderate activity per week. Even walking 30 minutes daily can help.</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-weight"></i>
+                        </div>
+                        <h3>Weight Management</h3>
+                        <p>Losing just 5-10% of your body weight can dramatically reduce diabetes risk if you're overweight.</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h3>Stress Management</h3>
+                        <p>Chronic stress affects blood sugar levels. Practice relaxation techniques like meditation or deep breathing.</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-procedures"></i>
+                        </div>
+                        <h3>Regular Check-ups</h3>
+                        <p>Monitor your blood sugar levels annually, especially if you have risk factors like family history.</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-wine-bottle"></i>
+                        </div>
+                        <h3>Limit Alcohol</h3>
+                        <p>Excessive alcohol can lead to weight gain and affect blood sugar control. Drink in moderation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Assessment Form Section
+        <section class="assessment-section" id="assessment">
+            <div class="container">
+                <h2>Diabetes Risk Assessment</h2>
+                <p class="section-subtitle">Please login to access our diabetes risk assessment tool</p>
+                
+                <div class="login-prompt">
+                    <p>Our comprehensive assessment analyzes multiple health factors to evaluate your diabetes risk.</p>
+                    <a href="login.html" class="cta-button">Login to Start Assessment</a>
+                </div>
+            </div>
+        </section> -->
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <i class="fas fa-heartbeat"></i>
+                        <span>DiabetesRisk</span>
+                    </div>
+                    <p>Empowering individuals with health awareness tools.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#assessment">Assessment</a></li>
+                        <li><a href="#tips">Health Tips</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#technology">Technology</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-disclaimer">
+                    <h4>Disclaimer</h4>
+                    <p>This tool is for educational purposes only and not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician with any questions you may have regarding a medical condition.</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Diabetes Risk Prediction System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/script.js"></script>
+    <script>
+        // Initialize factors chart
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('factorsChart').getContext('2d');
+            const factorsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Glucose', 'BMI', 'Age', 'Blood Pressure', 'Insulin', 'Pedigree'],
+                    datasets: [{
+                        label: 'Importance in Prediction',
+                        data: [0.25, 0.18, 0.15, 0.12, 0.10, 0.08],
+                        backgroundColor: [
+                            '#0097a7',
+                            '#4caf50',
+                            '#ff9800',
+                            '#f44336',
+                            '#9c27b0',
+                            '#607d8b'
+                        ],
+                        borderColor: [
+                            '#006064',
+                            '#2e7d32',
+                            '#e65100',
+                            '#c62828',
+                            '#6a1b9a',
+                            '#37474f'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 0.3,
+                            title: {
+                                display: true,
+                                text: 'Feature Importance'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
