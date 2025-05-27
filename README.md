@@ -1,6 +1,6 @@
 # Diabetes Risk Prediction System
 
-![Home_page](image-2.png)
+![Home_page](/static/images/image-2.png)
 
 A web application that assesses diabetes risk using machine learning, provides personalized health recommendations, and maintains a history of all assessments.
 
@@ -49,10 +49,10 @@ A web application that assesses diabetes risk using machine learning, provides p
 - PIMA Indians Diabetes Dataset
 - Trained Random Forest Classifier
 
-![dataset_image](image.png)
+![dataset_image](/static/images/image.png)
 
 ## 📂 Project Structure
-![project_structure_img](image-1.png)
+![project_structure_img](/static/images/image-1.png)
 
 
 ## 🚀 Installation
@@ -64,19 +64,19 @@ A web application that assesses diabetes risk using machine learning, provides p
 
 2. Set up a virtual environment (recommended):
 
-    ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 
 3. Install dependencies:
 
-    ```bash
-pip install -r requirements.txt
+   ```bash
+   pip install -r requirements.txt
 
 4. Run the application:
 
-    ```bash
-python app.py
+   ```bash
+   python app.py
 
 📊 Model Details
 Algorithm: Random Forest Classifier
@@ -127,7 +127,7 @@ Age
 🔍 Filter by **date** or **risk level**  
 ⬇️ Re-download any previous report for review
 
-
+<br>
 🛡️ Disclaimer!!
 
 This application is for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
@@ -139,16 +139,17 @@ Contributions are welcome! Please follow these steps:
 
 2. Create your feature branch:
 
-    ```bash
-git checkout -b feature/AmazingFeature
+   ```bash
+   git checkout -b feature/AmazingFeature
 
 3. Commit your changes:
 
-    ```bash
-git commit -m 'Add some amazing feature'
+   ```bash
+   git commit -m 'Add some amazing feature'
 
 4. Push to the branch:
-    ```git push origin feature/AmazingFeature
+   ```bash
+   git push origin feature/AmazingFeature
 
 5. Open a Pull Request
 
