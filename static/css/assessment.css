@@ -464,6 +464,12 @@ body {
     box-shadow: var(--shadow);
 }
 
+@media (max-width: 768px) {
+    .chart-container {
+        min-height: 250px;
+    }
+}
+
 .model-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -472,11 +478,14 @@ body {
 }
 
 .model-card {
-    background-color: var(--bg-color);
-    border-radius: var(--radius-sm);
-    padding: 20px;
+     background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 25px;
     box-shadow: var(--shadow);
     transition: var(--transition);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .model-card:hover {
@@ -498,9 +507,11 @@ body {
 }
 
 .chart-container {
+     position: relative;
+    flex-grow: 1;
+    min-height: 300px;
     width: 100%;
-    height: 250px;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .dataset-preview {
@@ -656,6 +667,43 @@ body {
 
 #riskPercentage.changed {
     animation: pulse 1s ease;
+}
+
+.matrix-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Tooltip styling for matrix charts */
+.chartjs-tooltip {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 4px;
+    color: white;
+    padding: 8px 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+}
+
+.chart-container {
+    position: relative;
+    height: 250px;
+    width: 100%;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .chart-container {
+        height: 200px;
+    }
 }
 
 @keyframes pulse {

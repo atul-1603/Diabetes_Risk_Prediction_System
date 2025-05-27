@@ -39,7 +39,7 @@ def prepare_features(user_data):
 
 @app.route('/')
 def dashboard():
-    return render_template('assessment.html')
+    return render_template('dashboard.html')
 
 @app.route('/login')
 def login():

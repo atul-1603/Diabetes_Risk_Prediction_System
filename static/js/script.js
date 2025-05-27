@@ -1,4 +1,40 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Intersection Observer setup
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // For regular scroll-triggered elements
+                if (entry.target.hasAttribute('data-scroll')) {
+                    entry.target.classList.add('is-visible');
+                }
+                
+                // For staggered animations
+                if (entry.target.hasAttribute('data-scroll-stagger')) {
+                    entry.target.classList.add('is-visible');
+                }
+                
+                // Unobserve after animation triggers to improve performance
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe all elements with data-scroll attribute
+    document.querySelectorAll('[data-scroll]').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Observe all elements with data-scroll-stagger attribute
+    document.querySelectorAll('[data-scroll-stagger]').forEach(el => {
+        observer.observe(el);
+    });
+
     // Theme Toggle
     const themeToggle = document.getElementById('themeToggle');
     const html = document.documentElement;

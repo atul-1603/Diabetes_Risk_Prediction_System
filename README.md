@@ -1,6 +1,6 @@
 # Diabetes Risk Prediction System
 
-![Project Banner](static/images/banner.png) <!-- Add your banner image if available -->
+![Home_page](image-2.png)
 
 A web application that assesses diabetes risk using machine learning, provides personalized health recommendations, and maintains a history of all assessments.
 
@@ -28,36 +28,31 @@ A web application that assesses diabetes risk using machine learning, provides p
 
 ## 🛠️ Tech Stack
 
-**Frontend**:
-- HTML5, CSS3, JavaScript
-- Chart.js for data visualization
-- jsPDF for PDF generation
+### 🎨 Frontend
+<p align="left">
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white"/>
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white"/>
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/>
+  <img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white"/>
+</p>
 
-**Backend**:
-- Python Flask
-- scikit-learn for machine learning
-- Pandas for data processing
+### 🧠 Backend
+<p align="left">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white"/>
+  <img src="https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white"/>
+</p>
+
 
 **Data**:
 - PIMA Indians Diabetes Dataset
 - Trained Random Forest Classifier
 
+![dataset_image](image.png)
+
 ## 📂 Project Structure
-diabetes-risk-app/
-├── static/ # Static files
-│ ├── css/ # Stylesheets
-│ ├── js/ # JavaScript files
-│ └── images/ # Image assets
-├── templates/ # HTML templates
-│ ├── dashboard.html # Main interface
-│ ├── history.html # Report history
-│ └── assessment.html # Assessment form
-├── user_reports/ # Generated reports storage
-├── models/ # ML models
-│ └── diabetes_pipeline.pkl
-├── app.py # Flask application
-├── requirements.txt # Dependencies
-└── README.md # This file
+![project_structure_img](image-1.png)
 
 
 ## 🚀 Installation
@@ -66,26 +61,27 @@ diabetes-risk-app/
    ```bash
    git clone https://github.com/yourusername/diabetes-risk-prediction.git
    cd diabetes-risk-prediction
-Set up a virtual environment (recommended):
 
-bash
+2. Set up a virtual environment (recommended):
+
+    ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-Install dependencies:
 
-bash
+3. Install dependencies:
+
+    ```bash
 pip install -r requirements.txt
-Run the application:
 
-bash
+4. Run the application:
+
+    ```bash
 python app.py
-Access the application:
-Open http://localhost:5000 in your browser
 
 📊 Model Details
 Algorithm: Random Forest Classifier
 
-Accuracy: 78% (test set)
+Accuracy: 83% (test set)
 
 Features Used:
 
@@ -105,61 +101,64 @@ Diabetes Pedigree Function
 
 Age
 
-🌍 API Endpoints
-Endpoint	Method	Description
-/	GET	Main dashboard
-/history	GET	Report history page
-/predict	POST	Risk prediction API
-/report/<filename>	GET	Download specific report
-📝 Usage Guide
-Complete the Assessment Form:
+## 📝 Usage Guide
 
-Fill in all required health metrics
+### 🧾 1. Complete the Assessment Form  
+🖋️ Fill in all required health metrics (Glucose, BMI, Age, etc.)  
+🔘 Click **"Calculate Risk"** to submit your data  
 
-Click "Calculate Risk"
+---
 
-View Results:
+### 📊 2. View Results  
+📈 See your **Diabetes Risk Percentage** displayed clearly  
+🧠 Review **personalized recommendations** tailored to your inputs  
+⚠️ Understand your **key risk factors** (top contributing metrics)
 
-See your diabetes risk percentage
+---
 
-Review personalized recommendations
+### 💾 3. Save or Download Report  
+📄 Click **"Download Report"** to save a **PDF** copy  
+🗂️ Reports are also **automatically saved** in your history section
 
-View key risk factors
+---
 
-Save/Download Report:
+### 🕒 4. View History  
+📚 Access all your **previous assessments** in a structured view  
+🔍 Filter by **date** or **risk level**  
+⬇️ Re-download any previous report for review
 
-Click "Download Report" to save PDF
 
-Reports are automatically saved to your history
+🛡️ Disclaimer!!
 
-View History:
-
-Access all previous reports
-
-Filter by date or risk level
-
-Re-download any report
-
-🛡️ Disclaimer
 This application is for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
 
 🤝 Contributing
 Contributions are welcome! Please follow these steps:
 
-Fork the project
+1. Fork the project
 
-Create your feature branch (git checkout -b feature/AmazingFeature)
+2. Create your feature branch:
 
-Commit your changes (git commit -m 'Add some amazing feature')
+    ```bash
+git checkout -b feature/AmazingFeature
 
-Push to the branch (git push origin feature/AmazingFeature)
+3. Commit your changes:
 
-Open a Pull Request
+    ```bash
+git commit -m 'Add some amazing feature'
+
+4. Push to the branch:
+    ```git push origin feature/AmazingFeature
+
+5. Open a Pull Request
 
 📜 License
+
 Distributed under the MIT License. See LICENSE for more information.
 
 ✉️ Contact
-Project Maintainer: [Atul Dubey]
+Project Maintainer: [Atul Dubey]  
+
 Email: atuld1413@gmail.com
+
 Project Link: https://github.com/atul-1603/diabetes-risk-prediction
