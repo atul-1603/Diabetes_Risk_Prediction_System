@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diabetes Risk Prediction System</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <title>DiabCheck</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="../static/images/favicon.ico">
 </head>
+
 <body>
     <header class="header">
         <div class="container">
@@ -43,7 +47,7 @@
                 <div class="hero-content" data-scroll="fade-right">
                     <h1>Diabetes Risk Prediction System</h1>
                     <p class="tagline">Check your diabetes risk in under a minute</p>
-                    <a href="login.html" class="cta-button" id="startAssessment">Start Assessment</a>
+                    <a href="{{ url_for('login') }}" class="cta-button" id="startAssessment">Start Assessment</a>
                 </div>
                 <div class="hero-image" data-scroll="fade-left">
                     <img src="../static/images/image-removebg-preview.png" alt="Health check illustration" height="350px" width="350px">

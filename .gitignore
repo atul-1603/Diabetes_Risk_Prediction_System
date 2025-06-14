@@ -1,2 +1,6 @@
 v310
 .vscode
+user_reports
+images
+serviceAccountKey.json
+.env

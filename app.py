@@ -75,22 +75,81 @@ def history():
         return render_template('report_history.html', reports=reports)
     except Exception as e:
         return str(e), 500
-
+    
+@app.route('/delete_report/<path:filename>', methods=['DELETE'])
+def delete_report(filename):
+    try:
+        # Security checks
+        if not filename or '..' in filename or filename.startswith('/'):
+            return jsonify({'error': 'Invalid filename'}), 400
+        
+        # Get absolute path to reports directory
+        reports_dir = os.path.abspath(app.config['UPLOAD_FOLDER'])
+        
+        # Normalize and join paths
+        safe_filename = os.path.normpath(filename)
+        json_path = os.path.join(reports_dir, safe_filename)
+        pdf_path = os.path.join(reports_dir, safe_filename.replace('.json', '.pdf'))
+        
+        # Verify the path is within the intended directory
+        if not (os.path.abspath(json_path).startswith(reports_dir) and 
+                os.path.abspath(pdf_path).startswith(reports_dir)):
+            return jsonify({'error': 'Invalid file path'}), 400
+        
+        # Debug logging
+        app.logger.info(f"Attempting to delete: {json_path} and {pdf_path}")
+        
+        # Delete files
+        deleted = []
+        for path in [json_path, pdf_path]:
+            if os.path.exists(path):
+                try:
+                    os.remove(path)
+                    deleted.append(path)
+                except Exception as e:
+                    app.logger.error(f"Error deleting {path}: {str(e)}")
+                    continue
+        
+        if not deleted:
+            return jsonify({'error': 'No files found to delete'}), 404
+            
+        return jsonify({
+            'success': True,
+            'deleted': deleted
+        })
+        
+    except Exception as e:
+        app.logger.error(f"Error in delete_report: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+    
 @app.route('/report/<filename>')
 def serve_report(filename):
     # Security check
     if '..' in filename or filename.startswith('/'):
         return "Invalid filename", 400
 
-    # If user requests download or view, return the corresponding PDF
+    # Serve either JSON or PDF based on request
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    
+    if not os.path.exists(file_path):
+        return "Report not found", 404
+        
     if filename.endswith('.json'):
-        pdf_file = filename.replace('.json', '.pdf')
-        pdf_path = os.path.join(app.config['UPLOAD_FOLDER'], pdf_file)
-        if not os.path.exists(pdf_path):
-            return "PDF report not found", 404
-        as_attachment = request.args.get('download') == 'true'
-        return send_from_directory(app.config['UPLOAD_FOLDER'], pdf_file, as_attachment=as_attachment)
-
+        if request.args.get('download') == 'true':
+            # Generate and serve PDF for download
+            pdf_file = filename.replace('.json', '.pdf')
+            pdf_path = os.path.join(app.config['UPLOAD_FOLDER'], pdf_file)
+            
+            if not os.path.exists(pdf_path):
+                with open(file_path) as f:
+                    report_data = json.load(f)
+                save_pdf_report(report_data, filename)
+                
+            return send_from_directory(app.config['UPLOAD_FOLDER'], pdf_file, as_attachment=True)
+        else:
+            # Serve JSON data for viewing
+            return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+            
     return "Invalid report format", 400
 
 @app.route('/predict', methods=['POST'])
@@ -137,6 +196,7 @@ def predict():
     except Exception as e:
         print(f"Prediction error: {str(e)}")
         return jsonify({'error': str(e)}), 500
+    
 
 def generate_suggestions(user_data):
     """Generate personalized health suggestions based on user input"""
