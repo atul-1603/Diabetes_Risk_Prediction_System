@@ -13,12 +13,15 @@ app.config['UPLOAD_FOLDER'] = 'user_reports'
 # Create reports directory if it doesn't exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "models", "diabetes_pipeline.pkl")
+
 # Load the pipeline with verification (keep your existing code)
 try:
-    with open('./models/diabetes_pipeline.pkl', 'rb') as f:
+    with open(MODEL_PATH, "rb") as f:
         pipeline = pickle.load(f)
         print(f"Pipeline loaded successfully. Steps: {pipeline.named_steps.keys()}")
-        if not hasattr(pipeline, 'predict'):
+        if not hasattr(pipeline, "predict"):
             raise ValueError("Loaded object is not a valid scikit-learn pipeline")
 except Exception as e:
     print(f"Error loading pipeline: {str(e)}")
